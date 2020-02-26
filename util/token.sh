@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export LINE_CHANNEL_ACCESS_TOKEN=$2
+export LINE_CHANNEL_SECRET=$1
