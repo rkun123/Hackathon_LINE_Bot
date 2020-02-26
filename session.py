@@ -82,6 +82,8 @@ class Session:
         self.reserve(self.arrival_time, event)
 
     def member_arrival_receiver(self, event):
+        if event.type is not "postback":
+            return None
         print("user_id: "+event.source.user_id)
         user_name = "@"+self.display_name_by_id(event.source.user_id).display_name
         print(user_name)
