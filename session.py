@@ -54,8 +54,11 @@ class Session:
             return TextSendMessage("Finish")
 
     def dest(self, event):
-        self.step += 1
-        return TextSendMessage("目的地を入力してね")
+        print(event.message.text)
+        if "ヤンデレBot" in event.message.text:
+            self.step += 1
+            return TextSendMessage("目的地を入力してね")
+        return TextSendMessage("無反応")
 
     def dest_receiver(self, event):
         self.step += 1
