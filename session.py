@@ -113,8 +113,10 @@ class Session:
         print(arrival_datetime)
         while True:
             print(".")
-            if datetime.datetime.now() >= arrival_datetime:
-                yandere.yandere_negative(api, event, list(self.members - self.arrived_members))
+            if len(self.members) == len(self.arrived_members):
                 self.step = 0
                 break
+            if datetime.datetime.now() >= arrival_datetime:
+                yandere.yandere_negative(api, event, list(self.members - self.arrived_members))
+                arrival_datetime += datetime.timedelta(minutes=1)
             time.sleep(1)
