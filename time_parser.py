@@ -13,13 +13,13 @@ def time_parser(event):
     return date
 
 def remain_time(event):
-    return  datetime.datetime.now() - event
+    return  event - datetime.datetime.now()
 
 if __name__ == "__main__":
-    s = "2020-02-26 14:42"
+    s = "2020-03-26 14:42"
     print(time_parser(s))
+    print(remain_time(time_parser(s)))
     s = "02-20 14:42"
     print(time_parser(s))
     s = "14:42"
     print(time_parser(s))
-    print(remain_time(time_parser(s)))
