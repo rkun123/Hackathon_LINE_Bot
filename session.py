@@ -21,8 +21,8 @@ class Session:
         self.api = api
         self.step = 0
         self.destination = ""
-        self.members = []
-        self.arrived_members = []
+        self.members = set()
+        self.arrived_members = set()
         self.arrival_time = None
 
     def display_name_by_id(self, id):
@@ -70,14 +70,13 @@ class Session:
 
     def member_receiver(self, event):
         self.step += 1
-        #self.members = event.message.text.split(",")
-        self.members = member_parser.member_parser(event)
-        self.members.append("@"+self.display_name_by_id(event.source.user_id).display_name)
+        self.members = set(member_parser.member_parser(event))
+        # Add source user
+        self.members.add("@"+self.display_name_by_id(event.source.user_id).display_name)
         print(self.members)
         self.api.push_message(event.source.group_id, messages=TextSendMessage(text="参加者は{}だね．".format(self.members)))
         self.api.reply_message(event.reply_token, template_message_generator.arrival_button())
         self.reserve(self.arrival_time, event)
-        #return TextSendMessage("メンバーは{}だね．\n{}".format(self.members, progress_bar.progress_bar(3, 10)))
 
     def member_arrival_receiver(self, event):
         print("user_id: "+event.source.user_id)
@@ -90,7 +89,7 @@ class Session:
         if user_name in self.arrived_members:
             return TextSendMessage("{}さん，2回以上到着しないでください．".format(user_name[1:]))
 
-        self.arrived_members.append(user_name)
+        self.arrived_members.add(user_name)
         print(self.arrived_members)
 
         return TextSendMessage(progress_bar.progress_bar(len(self.arrived_members), len(self.members)))
@@ -110,6 +109,6 @@ class Session:
         while True:
             print(".")
             if datetime.datetime.now() >= arrival_datetime:
-                yandere.yandere_negative(api, event, self.members - self.arrived_members)
+                yandere.yandere_negative(api, event, list(self.members - self.arrived_members))
                 break
             time.sleep(1)
