@@ -10,6 +10,7 @@ import destination_parser
 import member_parser
 import time_parser
 import progress_bar
+import yandere
 
 
 # Steps
@@ -73,19 +74,24 @@ class Session:
         self.step += 1
         #self.members = event.message.text.split(",")
         self.members = member_parser.member_parser(event)
-        self.reserve(self.arrival_time)
+        self.reserve(self.arrival_time, event)
         return TextSendMessage("メンバーは{}だね．\n{}".format(self.members, progress_bar.progress_bar(3, 10)))
 
 
-    def reserve(self, arrival_datetime):
-        pending = threading.Thread(name="arrival_timer", target=self.arrival_notify, args=(self.api, arrival_datetime))
+    def reserve(self, arrival_datetime, event):
+        pending = threading.Thread(name="arrival_timer", target=self.arrival_notify, args=(self.api, arrival_datetime, event))
         pending.start()
         print("ArrivalPending has started")
         pending.join()
 
-    def arrival_notify(self, api, arrival_datetime):
+    def arrival_notify(self, api, arrival_datetime, event):
+        print("now: ")
+        print(datetime.datetime.now())
+        print("target: ")
+        print(arrival_datetime)
         while True:
-            if datetime.datetime.now() > arrival_datetime:
-                api.post_message(messages=TextSendMessage(text="じかんです"))
+            print(".")
+            if datetime.datetime.now() >= arrival_datetime:
+                yandere.yandere_negative(api, event, ["aa"])
                 break
             time.sleep(1)
