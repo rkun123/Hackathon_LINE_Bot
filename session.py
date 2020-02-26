@@ -2,6 +2,8 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage, QuickReply, QuickReplyButton, DatetimePickerAction
 )
 import datetime
+import threading
+import time
 
 
 import destination_parser
@@ -17,12 +19,13 @@ import progress_bar
 # 4: member_receiver
 
 class Session:
-    def __init__(self, group_id):
+    def __init__(self, group_id, api):
         self.group_id = group_id
+        self.api = api
         self.step = 0
         self.destination = ""
         self.members = []
-        self.arrive_time = None
+        self.arrival_time = None
 
     # returns *SendMessage
     def execute(self, event):
@@ -62,12 +65,27 @@ class Session:
 
     def time_receiver(self, event):
         self.step += 1
-        self.arrive_time = time_parser.time_parser(event)
-        print(self.arrive_time)
-        return TextSendMessage("到着時間は{}だね．次はメンバーを入力してね．".format(self.arrive_time))
+        self.arrival_time = time_parser.time_parser(event)
+        print(self.arrival_time)
+        return TextSendMessage("到着時間は{}だね．次はメンバーを入力してね．".format(self.arrival_time))
 
     def member_receiver(self, event):
         self.step += 1
         #self.members = event.message.text.split(",")
         self.members = member_parser.member_parser(event)
-        return TextSendMessage("メンバーは{}だね．{}".format(self.members, progress_bar.progress_bar(3, 2)))
+        self.reserve(self.arrival_time)
+        return TextSendMessage("メンバーは{}だね．\n{}".format(self.members, progress_bar.progress_bar(3, 10)))
+
+
+    def reserve(self, arrival_datetime):
+        pending = threading.Thread(name="arrival_timer", target=self.arrival_notify, args=(self.api, arrival_datetime))
+        pending.start()
+        print("ArrivalPending has started")
+        pending.join()
+
+    def arrival_notify(self, api, arrival_datetime):
+        while True:
+            if datetime.datetime.now() > arrival_datetime:
+                api.post_message(messages=TextSendMessage(text="じかんです"))
+                break
+            time.sleep(1)
