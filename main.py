@@ -23,16 +23,16 @@ line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
 
-def departParser(text):
-    m = re.findall(r'目的地[ 　:\n]*(.*)$', "目的地 \n あいうえお")
-    departure = m.findall[0]
-    print("Departure: "+departure)
-    return departure
+# def departParser(text):
+    # m = re.findall(r'目的地[ 　:\n]*(.*)$', "目的地 \n あいうえお")
+    # departure = m.findall[0]
+    # print("Departure: "+departure)
+    # return departure
 
 
 def processor(text):
     # departure = departParser(text)
-    return "It works!!"
+    return TextSendMessage(text="It works!!")
     
 
 
