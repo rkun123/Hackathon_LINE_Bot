@@ -1,3 +1,4 @@
+from linebot.exceptions import LineBotApiError
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage, QuickReply, QuickReplyButton, DatetimePickerAction
 )
@@ -10,14 +11,9 @@ import destination_parser
 import member_parser
 import time_parser
 import progress_bar
+import template_message_generator
 import yandere
 
-
-# Steps
-# 0: dest
-# 2: dest_receiver
-# 3: time_receiver
-# 4: member_receiver
 
 class Session:
     def __init__(self, group_id, api):
@@ -26,7 +22,15 @@ class Session:
         self.step = 0
         self.destination = ""
         self.members = []
+        self.arrived_members = []
         self.arrival_time = None
+
+    def display_name_by_id(self, id):
+        try:
+            profile = self.api.get_profile(id)
+            return profile
+        except LineBotApiError as e:
+            return None
 
     # returns *SendMessage
     def execute(self, event):
@@ -41,6 +45,9 @@ class Session:
 
         elif self.step == 3:
             return self.member_receiver(event)
+
+        elif self.step == 4:
+            return self.member_arrival_receiver(event)
         
         else:
             self.step = 0
@@ -53,16 +60,7 @@ class Session:
     def dest_receiver(self, event):
         self.step += 1
         self.destination = destination_parser.destination_parser(event)
-        return TextSendMessage(text="目的地は{}だね．次は到着時間を入力してね．".format(self.destination), quick_reply=QuickReply(items=[
-            QuickReplyButton(
-                action=DatetimePickerAction(
-                    label="到着時間",
-                    data="arrival_time",
-                    mode="datetime"
-                    )
-                )
-            ])
-            )
+        return template_message_generator.arrival_datepicker()
 
     def time_receiver(self, event):
         self.step += 1
@@ -74,8 +72,28 @@ class Session:
         self.step += 1
         #self.members = event.message.text.split(",")
         self.members = member_parser.member_parser(event)
+        self.members.append("@"+self.display_name_by_id(event.source.user_id).display_name)
+        print(self.members)
+        self.api.push_message(event.source.group_id, messages=TextSendMessage(text="参加者は{}だね．".format(self.members)))
         self.reserve(self.arrival_time, event)
-        return TextSendMessage("メンバーは{}だね．\n{}".format(self.members, progress_bar.progress_bar(3, 10)))
+        return template_message_generator.arrival_button()
+        #return TextSendMessage("メンバーは{}だね．\n{}".format(self.members, progress_bar.progress_bar(3, 10)))
+
+    def member_arrival_receiver(self, event):
+        print("user_id: "+event.source.user_id)
+        user_name = "@"+self.display_name_by_id(event.source.user_id).display_name
+        print(user_name)
+
+        if user_name not in self.members:
+            return TextSendMessage("{}さん，あなたは呼んでいません．".format(user_name[1:]))
+
+        if user_name in self.arrived_members:
+            return TextSendMessage("{}さん，2回以上到着しないでください．".format(user_name[1:]))
+
+        self.arrived_members.append(user_name)
+        print(self.arrived_members)
+
+        return TextSendMessage(progress_bar.progress_bar(len(self.arrived_members), len(self.members)))
 
 
     def reserve(self, arrival_datetime, event):
@@ -92,6 +110,6 @@ class Session:
         while True:
             print(".")
             if datetime.datetime.now() >= arrival_datetime:
-                yandere.yandere_negative(api, event, ["aa"])
+                yandere.yandere_negative(api, event, self.members - self.arrived_members)
                 break
             time.sleep(1)
