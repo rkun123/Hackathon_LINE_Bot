@@ -47,7 +47,7 @@ def get_session(event):
         try:
             return sessions[group_id]
         except KeyError:
-            sessions[group_id] = session.Session(group_id)
+            sessions[group_id] = session.Session(group_id, line_bot_api)
             return sessions[group_id]
 
 
