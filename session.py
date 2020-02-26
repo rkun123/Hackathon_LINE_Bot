@@ -75,8 +75,8 @@ class Session:
         self.members.append("@"+self.display_name_by_id(event.source.user_id).display_name)
         print(self.members)
         self.api.push_message(event.source.group_id, messages=TextSendMessage(text="参加者は{}だね．".format(self.members)))
+        self.api.reply_message(event.reply_token, template_message_generator.arrival_button())
         self.reserve(self.arrival_time, event)
-        return template_message_generator.arrival_button()
         #return TextSendMessage("メンバーは{}だね．\n{}".format(self.members, progress_bar.progress_bar(3, 10)))
 
     def member_arrival_receiver(self, event):
