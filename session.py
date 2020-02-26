@@ -110,5 +110,6 @@ class Session:
             print(".")
             if datetime.datetime.now() >= arrival_datetime:
                 yandere.yandere_negative(api, event, list(self.members - self.arrived_members))
+                self.step = 0
                 break
             time.sleep(1)
