@@ -8,31 +8,64 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, LocationMessage, TemplateSendMessage, ButtonsTemplate, DatetimePickerTemplateAction, PostbackAction, FlexSendMessage, BubbleContainer, BubbleStyle, BoxComponent, TextComponent, BlockStyle
+    MessageEvent, TextMessage, LocationMessage, TemplateSendMessage, ButtonsTemplate, DatetimePickerTemplateAction, PostbackAction, FlexSendMessage, BubbleContainer, BubbleStyle, BoxComponent, ButtonComponent, TextComponent, ImageComponent, BlockStyle, LocationAction
 )
 
 import os
 
-def arrival_datepicker():
+def arrival_locationpicker(msg):
+    return FlexSendMessage("目的地設定", BubbleContainer(
+        size="micro",
+        # hero=ImageComponent(url="https://via.placeholder.com/500"),
+        body=BoxComponent(
+            layout="vertical",
+            contents=[ 
+                TextComponent(
+                    text=msg,
+                    size="sm"
+                ),
+                ButtonComponent(
+                    style="link",
+                    height="sm",
+                    action=LocationAction(
+                        label="目的地設定"
+                    )
+                )]
+        ),
+        styles=BubbleStyle(body=BlockStyle(background_color="#ffffff"))
+    ))
+
+
+def arrival_datepicker(msg):
     now_date = datetime.datetime.now().isoformat()
     regex  = re.findall(r"[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}:[0-9]{2}", now_date)
     tstr = regex[0] + "T" + regex[1]
 
-    return FlexSendMessage("到着時間", BubbleContainer(
-        size="micro",
+    return FlexSendMessage("集合時間", BubbleContainer(
+        size="mega",
+        # hero=ImageComponent(url="https://via.placeholder.com/500"),
         body=BoxComponent(
             layout="vertical",
-            contents=[ TextComponent(text="到着時間ボタン") ]
+            contents=[
+                TextComponent(
+                    text=msg,
+                    size="sm"
+                ),
+                ButtonComponent(
+                    style="link",
+                    height="sm",
+                    action=DatetimePickerTemplateAction(
+                        label="集合時間設定",
+                        data="action=buy&itemid=2&mode=datetime",
+                        mode="datetime",
+                        initial=tstr,
+                        min=tstr,
+                        max="2099-12-31T23:59"
+                    )
+                )
+            ]
         ),
-        action=DatetimePickerTemplateAction(
-            label="設定",
-            data="action=buy&itemid=2&mode=datetime",
-            mode="datetime",
-            initial=tstr,
-            min=tstr,
-            max="2099-12-31T23:59"
-        ),
-        styles=BubbleStyle(body=BlockStyle(background_color="#7dfffb"))
+        styles=BubbleStyle(body=BlockStyle(background_color="#ffffff"))
     ))
 
 def arrival_button():
@@ -40,14 +73,24 @@ def arrival_button():
         size="micro",
         body=BoxComponent(
             layout="vertical",
-            contents=[ TextComponent(text="到着したよボタン") ]
+            contents=[
+                ButtonComponent(
+                    style="link",
+                    height="sm",
+                    action=PostbackAction(
+                        label="到着",
+                        display_text="到着",
+                        data="data not served"
+                    )
+                )
+            ]
         ),
         action=PostbackAction(
             label="到着",
             display_text="到着",
             data="data not served"
         ),
-        styles=BubbleStyle(body=BlockStyle(background_color="#7dfffb"))
+        styles=BubbleStyle(body=BlockStyle(background_color="#ffffff"))
     ))
 
 
@@ -85,7 +128,7 @@ if __name__ == "__main__":
             return
         line_bot_api.reply_message(
             event.reply_token,
-            message
+            [arrival_datepicker(), arrival_button()]
         )
     
     port = int(os.getenv("PORT", 5000))
