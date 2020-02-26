@@ -1,4 +1,4 @@
-def templateMessageGenerator():
+def template_message_generator():
     # Signatureチェック等
     date_picker = TemplateSendMessage(
         alt_text='予定日を設定',
