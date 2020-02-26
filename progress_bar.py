@@ -8,9 +8,10 @@ def progress_bar(arrived, member):
 		s += "■ "
 	for j in range (rest):
 		s += "□ "
+	s += (" %d人/%d人" % (a,b))
 	return s
 
 if __name__ == "__main__":
 	a = 2
 	b = 10
-	print(progress_bar(a, b) +" %d人/%d人" % (a,b))
+	print(progress_bar(a, b))
