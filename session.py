@@ -7,6 +7,7 @@ import datetime
 import destination_parser
 import member_parser
 import time_parser
+import progress_bar
 
 
 # Steps
@@ -58,15 +59,15 @@ class Session:
                 )
             ])
             )
-        return TextSendMessage("目的地は{}だね．次は到着時間を入力してね．".format(self.destination))
 
     def time_receiver(self, event):
         self.step += 1
         self.arrive_time = time_parser.time_parser(event)
+        print(self.arrive_time)
         return TextSendMessage("到着時間は{}だね．次はメンバーを入力してね．".format(self.arrive_time))
 
     def member_receiver(self, event):
         self.step += 1
         #self.members = event.message.text.split(",")
         self.members = member_parser.member_parser(event)
-        return TextSendMessage("メンバーは{}だね．".format(self.members))
+        return TextSendMessage("メンバーは{}だね．{}".format(self.members, progress_bar.progress_bar(3, 2)))

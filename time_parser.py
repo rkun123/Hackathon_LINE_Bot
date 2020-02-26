@@ -2,7 +2,7 @@ import re
 import datetime
 
 def time_parser(event):
-    regex = re.findall(r'[0-9]{4}|[0-9]{2}-[0-9]{2}|[0-9]{2}:[0-9]{2}', event.datetime)
+    regex = re.findall(r'[0-9]{4}|[0-9]{2}-[0-9]{2}|[0-9]{2}:[0-9]{2}', event.postback.params["datetime"])
     if(len(regex)==3):
         str = regex[0] + '-' + regex[1] + ' ' + regex[2]
     date = datetime.datetime.strptime(str, '%Y-%m-%d %H:%M')

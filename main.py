@@ -7,7 +7,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage
+    MessageEvent, PostbackEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage
 )
 import os
 import random
@@ -63,13 +63,7 @@ def processor(event):
 
     return s.execute(event)
     
-    
-
-    
-    
     # return TextSendMessage(text="It works!!")
-    
-
 
 
 @app.route("/callback", methods=['POST'])
@@ -94,6 +88,17 @@ def callback():
 def handle_message(event):
     print(event)
     print(type(event))
+    message = processor(event)
+    if message is None:
+        return
+    line_bot_api.reply_message(
+        event.reply_token,
+        message
+    )
+
+@handler.add(PostbackEvent)
+def handle_postback(event):
+    print(event)
     message = processor(event)
     if message is None:
         return
