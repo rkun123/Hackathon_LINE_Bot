@@ -1,7 +1,7 @@
 import re
 
-def member_parser(text):
-   return re.findall(r'@([A-z0-9!#$%&()=^,./?+*]+)', text)
+def member_parser(event):
+   return re.findall("(@[一-龥ぁ-んァ-ンA-z0-9 ]+[一-龥ぁ-んァ-ンA-z0-9])\ *", event.message.text)
 
 
 
