@@ -13,6 +13,12 @@ import os
 import random
 import re
 
+
+
+import session
+
+
+
 app = Flask(__name__)
 
 #環境変数取得
@@ -23,16 +29,45 @@ line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
 
-# def departParser(text):
-    # m = re.findall(r'目的地[ 　:\n]*(.*)$', "目的地 \n あいうえお")
-    # departure = m.findall[0]
-    # print("Departure: "+departure)
-    # return departure
+sessions = {}
 
 
-def processor(text):
+def reply_error(event, message):
+    print("[ERROR] "+message)
+    line_bot_api.reply_message(event.reply_token, TextSendMessage("[ERROR] " + message))
+
+
+# get_session return session object by event object
+def get_session(event):
+    try:
+        print(event.source.sender_id)
+        # group_id = event["source"]["groupId"]
+        group_id = event.source.sender_id
+        print("[GROUP_ID] " + group_id)
+        try:
+            return sessions[group_id]
+        except KeyError:
+            sessions[group_id] = session.Session(group_id)
+            return sessions[group_id]
+
+
+    except AttributeError:
+        return None
+            
+
+def processor(event):
     # departure = departParser(text)
-    return TextSendMessage(text="It works!!")
+    s = get_session(event)
+    if session is None:
+        return reply_error(event, "There is no session.")
+
+    return s.execute(event)
+    
+    
+
+    
+    
+    # return TextSendMessage(text="It works!!")
     
 
 
@@ -55,14 +90,18 @@ def callback():
     return 'OK'
 
 
-@handler.add(MessageEvent, message=TextMessage)
+@handler.add(MessageEvent)
 def handle_message(event):
-    print(event.message.text)
-    message = processor(event.message.text)
+    print(event)
+    print(type(event))
+    message = processor(event)
+    if message is None:
+        return
     line_bot_api.reply_message(
         event.reply_token,
         message
     )
+
 
 if __name__ == "__main__":
 #    app.run()
