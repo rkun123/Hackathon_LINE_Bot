@@ -33,7 +33,7 @@ def arrival_button():
             alt_text="到着ボタン",
             template=ButtonsTemplate(
                 # thumbnail_image_url="https://example.com/image.jpg",
-                title="Menu", text="Please select",
+                title="到着", text="到着した人は押してください",
                 actions=[
                     PostbackAction(
                         label="到着", display_text="到着",
