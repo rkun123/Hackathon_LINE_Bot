@@ -35,7 +35,7 @@ class Session:
 
     # returns *SendMessage
     def execute(self, event):
-        if "キャンセル" in event.message.text:
+        if event.type == "message" and "キャンセル" in event.message.text:
             self.step = 0
             return TextSendMessage(text="キャンセルしました")
         elif self.step == 0:
