@@ -12,9 +12,106 @@ from linebot.models import (
 import os
 import random
 import re
+import time
 
 #noarrive(配列）:未到着の人の名前
+images = [
+        "https://cdn.wikiwiki.jp/proxy-image?url=http%3A%2F%2Flivedoor.blogimg.jp%2Fyabanet%2Fimgs%2Ff%2Fa%2Ffa633937.jpg",
+        "https://i.ytimg.com/vi/2EFraDhnceo/maxresdefault.jpg",
+        "https://amd.c.yimg.jp/amd/20200216-00000006-it_nlab-000-1-view.jpg"
+        ]
+
 def yandere_negative(line_bot_api, event, noarrive):
+        index = random.choice(range(3))
+        if index == 0:
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ねぇ{}，なんで時間どおりに来れないの".format(random.choice(noarrive)))
+                )
+            time.sleep(1)
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ねぇ")
+                )
+            time.sleep(1)
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ねぇ")
+                )
+            time.sleep(1)
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ねぇ")
+                )
+            time.sleep(4)
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ﾊﾔｸ....ｺﾅｲﾄ......")
+                )
+
+
+
+        elif index == 1:
+            msg = "約束の時間になりましたけど、あなたの姿が私には見つけられないのですが、どうされましたか？\n何か他に大切な用事でもありましたか？\nあなたの姿が早く見たいです。\nもしかして私のことが嫌いになりましたか？\nどうすればいいですか？\nもし私に不満があるなら何でも言ってください。\nすぐに直します。\nお願いします。\n私のことを許してください。\n許して。\n。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\nごめんなさい。\n"
+
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage(msg)
+                    )
+
+
+        elif index == 2:
+            sticker = random.choice([6,7,8,9,16])
+            for _ in range(5):
+                line_bot_api.push_message(
+                        event.source.sender_id,
+                        messages=StickerSendMessage(1, sticker)
+                        )
+                time.sleep(0.01)
+
+        elif index == 3:
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ねぇ{}，なんで時間どおりに来れないの".format(random.choice(noarrive)))
+                )
+            time.sleep(1)
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ねぇ")
+                )
+            time.sleep(1)
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ねぇ")
+                )
+            time.sleep(1)
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ねぇ")
+                )
+            time.sleep(4)
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("ﾊﾔｸ....ｺﾅｲﾄ......")
+                )
+
+
+        elif index == 4:
+            message =  "縺ゅ呪＞縺殺∴縺� ス撰ｼ托ｼ抵ｼ殺��ｽゑｽ� �ｸ�ｹ殺ｺ�ｱ�ｲ�ｳ�ｴ�ｵ �ｧ死ｨ�ｩ�呪ｪ繧ｩ譁�ｭ怜喧縺代ヱ繧ｿ呪繝ｼ繝ｳ讖溯�呪繝ｻ遐皮ｩｶ�樞包ｼ搾ｼ�ｿ��｡繹ｱ竭�竇｡"
+            line_bot_api.push_message(event.source.sender_id, messages=TextSendMessage(text=message))
+
+        elif index == 5:
+            message = "約束の時間になりました。\nですがまだあなたの姿が見られないようですが、どうされましたか？\n何か良くないことに巻き込まれたりしましたか？\nあなたの姿が早く見たいです。\nもしかして私のことが嫌いになりましたか？\nどうすればいいですか？\nもし私に不満があるなら何でも言ってください。\nすぐに直します。\nお願いします。\n私のことを嫌いにならないでください。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\n私のことを嫌いにならないでください。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\n私のことを嫌いにならないでください。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\n"
+            line_bot_api.push_message(event.source.sender_id, messages=TextSendMessage(text=message))
+            
+        else:
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=TextSendMessage("...")
+                )
+            
+
+def _yandere_negative(line_bot_api, event, noarrive):
 	i = random.randint(1, 30)
 	numlist = [6, 7, 8, 9, 16]
 	negative_message = ("あんたなんか、死んじゃえばいいんだっ！","私以外の女といるの？", "こないの？\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nさよなら""{}さん、私のこと嫌いなのかな", "{}あなたもう死んじゃったの", "そうねえ、死んだ{}なら愛してあげてもいいわ")
