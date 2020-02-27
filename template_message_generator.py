@@ -13,14 +13,14 @@ from linebot.models import (
 
 import os
 
-def arrival_locationpicker(msg):
+def arrival_locationpicker():
     return FlexSendMessage("目的地設定", BubbleContainer(
         size="mega",
         body=BoxComponent(
             layout="vertical",
             contents=[ 
                 TextComponent(
-                    text=msg,
+                    text="目的地を設定してください",
                     size="sm"
                 ),
             ]
