@@ -58,7 +58,6 @@ class Session:
             return TextSendMessage("Finish")
 
     def dest(self, event):
-        print(event.message.text)
         if "ヤンデレ" in event.message.text:
             self.step += 1
             return template_message_generator.arrival_locationpicker()
@@ -105,7 +104,7 @@ class Session:
         self.arrived_members.add(user_name)
         print(self.arrived_members)
 
-        return progress_bar.progress_bar(len(self.arrived_members), len(self.members))
+        return TextSendMessage(progress_bar.progress_bar(len(self.arrived_members), len(self.members)))
 
 
     def reserve(self, arrival_datetime, event):
@@ -125,6 +124,7 @@ class Session:
                 self.step = 0
                 break
             if datetime.datetime.now() >= arrival_datetime:
+                self.api.push_message(self.group_id, template_message_generator.arrival_timer_breaked())
                 yandere.yandere_negative(api, event, list(self.members - self.arrived_members))
                 arrival_datetime += datetime.timedelta(minutes=1)
             time.sleep(1)

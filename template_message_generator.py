@@ -140,6 +140,22 @@ def member_text(arrival_date):
         styles=BubbleStyle(body=BlockStyle(background_color="#ffffff"))
     ))
 
+def arrival_timer_breaked():
+    return FlexSendMessage("集合時間になりました", BubbleContainer(
+        size="mega",
+        body=BoxComponent(
+            layout="vertical",
+            separator="true",
+            contents=[
+                TextComponent(
+                    text="集合時間になりました",
+                    align="center",
+                    size="lg"
+                ),
+            ]),
+        styles=BubbleStyle(body=BlockStyle(background_color="#ffffff"))
+    ))
+
 
 if __name__ == "__main__":
     app = Flask(__name__)
