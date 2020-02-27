@@ -58,20 +58,21 @@ class Session:
         print(event.message.text)
         if "ヤンデレ" in event.message.text:
             self.step += 1
-            # return template_message_generator.arrival_locationpicker(messages.messages("input_destination"))
-            return TextSendMessage(messages.messages("input_destination"))
+            return template_message_generator.arrival_locationpicker(messages.messages("input_destination"))
+            # return TextSendMessage(messages.messages("input_destination"))
         return None
 
     def dest_receiver(self, event):
         self.step += 1
         self.destination = destination_parser.destination_parser(event)
-        return template_message_generator.arrival_datepicker(messages.messages("set_date").format(self.destination))
+        return template_message_generator.arrival_datepicker(self.destination)
 
     def time_receiver(self, event):
         self.step += 1
         self.arrival_time = time_parser.time_parser(event)
         print(self.arrival_time)
-        return TextSendMessage(messages.messages("invited_person").format(self.arrival_time))
+        # return TextSendMessage(messages.messages("invited_person").format(self.arrival_time))
+        return template_message_generator.member_text(self.arrival_time)
 
     def member_receiver(self, event):
         self.step += 1
@@ -91,10 +92,12 @@ class Session:
         print(user_name)
 
         if user_name not in self.members:
-            return TextSendMessage(messages.messages("unjoined_user_arrived").format(user_name[1:]))
+            # return TextSendMessage(messages.messages("unjoined_user_arrived").format(user_name[1:]))
+            return None
 
         if user_name in self.arrived_members:
-            return TextSendMessage(messages.messages("duplicated_user_arrived").format(user_name[1:]))
+            # return TextSendMessage(messages.messages("duplicated_user_arrived").format(user_name[1:]))
+            return None
 
         self.arrived_members.add(user_name)
         print(self.arrived_members)
