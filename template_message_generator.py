@@ -8,15 +8,14 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, LocationMessage, TemplateSendMessage, ButtonsTemplate, DatetimePickerTemplateAction, PostbackAction, FlexSendMessage, BubbleContainer, BubbleStyle, BoxComponent, ButtonComponent, TextComponent, ImageComponent, BlockStyle, LocationAction
+    MessageEvent, TextMessage, LocationMessage, TemplateSendMessage, ButtonsTemplate, DatetimePickerTemplateAction, PostbackAction, FlexSendMessage, BubbleContainer, BubbleStyle, BoxComponent, ButtonComponent, TextComponent, ImageComponent, BlockStyle, LocationAction, QuickReply, QuickReplyButton
 )
 
 import os
 
 def arrival_locationpicker(msg):
     return FlexSendMessage("目的地設定", BubbleContainer(
-        size="micro",
-        # hero=ImageComponent(url="https://via.placeholder.com/500"),
+        size="mega",
         body=BoxComponent(
             layout="vertical",
             contents=[ 
@@ -24,31 +23,37 @@ def arrival_locationpicker(msg):
                     text=msg,
                     size="sm"
                 ),
-                ButtonComponent(
-                    style="link",
-                    height="sm",
-                    action=LocationAction(
-                        label="目的地設定"
-                    )
-                )]
+            ]
         ),
         styles=BubbleStyle(body=BlockStyle(background_color="#ffffff"))
-    ))
+    ),
+    quickreply=QuickReply(items=[
+        QuickReplyButton(action=LocationAction(label="label"))
+        ]))
 
 
-def arrival_datepicker(msg):
+def arrival_datepicker(destination_name):
     now_date = datetime.datetime.now().isoformat()
     regex  = re.findall(r"[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}:[0-9]{2}", now_date)
     tstr = regex[0] + "T" + regex[1]
 
     return FlexSendMessage("集合時間", BubbleContainer(
         size="mega",
-        # hero=ImageComponent(url="https://via.placeholder.com/500"),
+        header=BoxComponent(
+            layout="vertical",
+            contents=[
+                TextComponent(
+                    text=destination_name,
+                    align="center",
+                    size="lg"
+                ),
+            ]),
         body=BoxComponent(
             layout="vertical",
             contents=[
                 TextComponent(
-                    text=msg,
+                    text="集合時間を入力してください",
+                    align="center",
                     size="sm"
                 ),
                 ButtonComponent(
@@ -70,7 +75,7 @@ def arrival_datepicker(msg):
 
 def arrival_button():
     return FlexSendMessage("到着", BubbleContainer(
-        size="micro",
+        size="mega",
         body=BoxComponent(
             layout="vertical",
             contents=[
@@ -83,6 +88,48 @@ def arrival_button():
                         data="data not served"
                     )
                 )
+            ]
+        ),
+        action=PostbackAction(
+            label="到着",
+            display_text="到着",
+            data="data not served"
+        ),
+        styles=BubbleStyle(body=BlockStyle(background_color="#ffffff"))
+    ))
+
+def member_text(arrival_date):
+    return FlexSendMessage("参加者入力", BubbleContainer(
+        size="mega",
+        header=BoxComponent(
+            layout="vertical",
+            separator="true",
+            contents=[
+                TextComponent(
+                    text=arrival_date.strftime("%m月%d日 %H時%M分"),
+                    align="center",
+                    size="lg"
+                ),
+            ]),
+        body=BoxComponent(
+            layout="vertical",
+            contents=[
+                TextComponent(
+                    text="あなた以外の参加者を，",
+                    align="center",
+                    size="md"
+                ),
+                TextComponent(
+                    text="@john @michael ...",
+                    align="center",
+                    color="#888822",
+                    size="sm"
+                ),
+                TextComponent(
+                    text="という形で入力してください．",
+                    align="center",
+                    size="md"
+                ),
             ]
         ),
         action=PostbackAction(
