@@ -35,7 +35,10 @@ class Session:
 
     # returns *SendMessage
     def execute(self, event):
-        if self.step == 0:
+        if "キャンセル" in event.message.text:
+            self.step = 0
+            return TextSendMessage(text="キャンセルしました")
+        elif self.step == 0:
             return self.dest(event)
 
         elif self.step == 1:
@@ -49,7 +52,7 @@ class Session:
 
         elif self.step == 4:
             return self.member_arrival_receiver(event)
-        
+
         else:
             self.step = 0
             return TextSendMessage("Finish")
