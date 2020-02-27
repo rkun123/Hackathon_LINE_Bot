@@ -1,5 +1,5 @@
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage, QuickReply, QuickReplyButton, DatetimePickerAction
+    MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage, QuickReply, QuickReplyButton, DatetimePickerAction, FlexSendMessage, BubbleContainer, BoxComponent, ImageComponent, TextComponent
 )
 
 def progress_bar(arrived, member):
@@ -14,27 +14,38 @@ def progress_bar(arrived, member):
 #	s += (" %d人/%d人" % (arrived,member))
 	s = (arrived/member )*10	#到着率(0~10)
 	if s == 0:
-		return ImageSendMessage("https://imgur.com/wB5hFdP")
+                url = "https://i.imgur.com/wB5hFdP.png"
+                return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 1:
-		return ImageSendMessage("https://imgur.com/exMPWQ6")
+		url = "https://i.imgur.com/exMPWQ6.png"
+		return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 2:
-		return ImageSendMessage("https://imgur.com/jBh0HqR")
+		url = "https://i.imgur.com/jBh0HqR.png"
+		return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 3:
-		return ImageSendMessage("https://imgur.com/LV7afnD")
+		url = "https://i.imgur.com/LV7afnD.png"
+		return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 4:
-		return ImageSendMessage("https://imgur.com/eVA2ek0")
+		url = "https://i.imgur.com/eVA2ek0.png"
+		return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 5:
-		return ImageSendMessage("https://imgur.com/VVO8EaF")
+                url = "https://i.imgur.com/VVO8EaF.png"
+                return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 6:
-		return ImageSendMessage("https://imgur.com/GJU66I0")
+		url = "https://i.imgur.com/GJU66I0.png"
+		return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 7:
-		return ImageSendMessage("https://imgur.com/1Q8uqBG")
+		url = "https://i.imgur.com/1Q8uqBG.png"
+		return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 8:
-		return ImageSendMessage("https://imgur.com/eIt9HaS")
+		url = "https://i.imgur.com/eIt9HaS.png"
+		return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 9:
-		return ImageSendMessage("https://imgur.com/gqXd46i")
+		url = "https://i.imgur.com/gqXd46i.png"
+		return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	elif s == 10:
-		return ImageSendMessage("https://imgur.com/lOU1KYG")
+		url = "https://i.imgur.com/lOU1KYG.png"
+		return ImageSendMessage(original_content_url=url, preview_image_url=url)
 	else:
 		return TextSendMessage("Err:Prog_Bar")
 
