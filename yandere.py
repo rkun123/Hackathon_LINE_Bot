@@ -25,29 +25,101 @@ def yandere_negative(line_bot_api, event, noarrive):
         index = random.choice(range(3))
         if index == 0:
             line_bot_api.push_message(
+                event.source.sender_id,
+
+                messages=FlexSendMessage("ねぇ{}，なんで時間どおりに来れないの".format(random.choice(noarrive)), BubbleContainer(
+                    size="kilo",
+                    body=BoxComponent(
+                        layout="vertical",
+                        contents=[
+                            TextComponent(
+                                text="ねぇ{}，なんで時間どおりに来れないの".format(random.choice(noarrive)),
+                                size="sm",
+                                color="#FF0000"
+                            ),
+                        ]
+                    ),
+                    styles=BubbleStyle(body=BlockStyle(background_color="#000000"))
+                )
+            )
+        )
+            time.sleep(1)
+            line_bot_api.push_message(
                     event.source.sender_id,
-                    messages=TextSendMessage("ねぇ{}，なんで時間どおりに来れないの".format(random.choice(noarrive)))
+                    messages=FlexSendMessage("ねえ", BubbleContainer(
+                        size="kilo",
+                        body=BoxComponent(
+                            layout="vertical",
+                            contents=[
+                                TextComponent(
+                                    text="ねえ",
+                                    size="sm",
+                                    color="#FF0000"
+                                ),
+                            ]
+                        ),
+                        styles=BubbleStyle(body=BlockStyle(background_color="#000000"))
+                    )
+                )
+            )
+
+            time.sleep(1)
+            line_bot_api.push_message(
+                    event.source.sender_id,
+                    messages=FlexSendMessage("ねえ", BubbleContainer(
+                        size="kilo",
+                        body=BoxComponent(
+                            layout="vertical",
+                            contents=[
+                                TextComponent(
+                                    text="ねえ",
+                                    size="sm",
+                                    color="#FF0000"
+                                ),
+                            ]
+                        ),
+                        styles=BubbleStyle(body=BlockStyle(background_color="#000000"))
+                    )
+            )
                 )
             time.sleep(1)
             line_bot_api.push_message(
                     event.source.sender_id,
-                    messages=TextSendMessage("ねぇ")
-                )
-            time.sleep(1)
-            line_bot_api.push_message(
-                    event.source.sender_id,
-                    messages=TextSendMessage("ねぇ")
-                )
-            time.sleep(1)
-            line_bot_api.push_message(
-                    event.source.sender_id,
-                    messages=TextSendMessage("ねぇ")
+                    messages=FlexSendMessage("ねえ", BubbleContainer(
+                        size="kilo",
+                        body=BoxComponent(
+                            layout="vertical",
+                            contents=[
+                                TextComponent(
+                                    text="ねえ",
+                                    size="sm",
+                                    color="#FF0000"
+                                ),
+                            ]
+                        ),
+                        styles=BubbleStyle(body=BlockStyle(background_color="#000000"))
+                    )
+            )
                 )
             time.sleep(4)
             line_bot_api.push_message(
                     event.source.sender_id,
-                    messages=TextSendMessage("ﾊﾔｸ....ｺﾅｲﾄ......")
+                    messages=FlexSendMessage("ﾊﾔｸ....ｺﾅｲﾄ......", BubbleContainer(
+                        size="kilo",
+                        body=BoxComponent(
+                            layout="vertical",
+                            contents=[
+                                TextComponent(
+                                    text="ﾊﾔｸ....ｺﾅｲﾄ......",
+                                    size="sm",
+                                    color="#FF0000"
+                                ),
+                            ]
+                        ),
+                        styles=BubbleStyle(body=BlockStyle(background_color="#000000"))
+                    )
                 )
+            )
 
 
 
@@ -56,8 +128,23 @@ def yandere_negative(line_bot_api, event, noarrive):
 
             line_bot_api.push_message(
                     event.source.sender_id,
-                    messages=TextSendMessage(msg)
+                    messages=FlexSendMessage(msg, BubbleContainer(
+                        size="kilo",
+                        body=BoxComponent(
+                            layout="vertical",
+                            contents=[
+                                TextComponent(
+                                    text=msg,
+                                    size="sm",
+                                    color="#FF0000"
+                                ),
+                            ]
+                        ),
+                        styles=BubbleStyle(body=BlockStyle(background_color="#000000"))
                     )
+            )
+                )
+
 
 
         elif index == 2:
@@ -103,13 +190,13 @@ def yandere_negative(line_bot_api, event, noarrive):
         elif index == 5:
             message = "約束の時間になりました。\nですがまだあなたの姿が見られないようですが、どうされましたか？\n何か良くないことに巻き込まれたりしましたか？\nあなたの姿が早く見たいです。\nもしかして私のことが嫌いになりましたか？\nどうすればいいですか？\nもし私に不満があるなら何でも言ってください。\nすぐに直します。\nお願いします。\n私のことを嫌いにならないでください。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\n私のことを嫌いにならないでください。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\n私のことを嫌いにならないでください。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\nお願いします。\n"
             line_bot_api.push_message(event.source.sender_id, messages=TextSendMessage(text=message))
-            
+
         else:
             line_bot_api.push_message(
                     event.source.sender_id,
                     messages=TextSendMessage("...")
                 )
-            
+
 
 def _yandere_negative(line_bot_api, event, noarrive):
 	i = random.randint(1, 30)
@@ -150,7 +237,7 @@ if __name__ == "__main__":
 	handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
 	s = ["rkun", "yuki", "Akira", "akata"]
-	
+
 	@app.route("/callback", methods=['POST'])
 	def callback():
 		# get X-Line-Signature header value
@@ -164,13 +251,13 @@ if __name__ == "__main__":
 		except InvalidSignatureError:
 			abort(400)
 		return 'OK'
-	
+
 	@handler.add(MessageEvent)
 	def handle_message(event):
 		print("てすと")
 		print(yandere_negative(line_bot_api, event, s))
 		print(event)
 		print(type(event))
-		
+
 	port = int(os.getenv("PORT", 5000))
 	app.run(host="0.0.0.0", port=port)
