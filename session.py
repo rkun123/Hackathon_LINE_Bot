@@ -58,7 +58,7 @@ class Session:
         print(event.message.text)
         if "ヤンデレ" in event.message.text:
             self.step += 1
-            return template_message_generator.arrival_locationpicker(messages.messages("input_destination"))
+            return template_message_generator.arrival_locationpicker()
             # return TextSendMessage(messages.messages("input_destination"))
         return None
 
@@ -102,7 +102,7 @@ class Session:
         self.arrived_members.add(user_name)
         print(self.arrived_members)
 
-        return TextSendMessage(progress_bar.progress_bar(len(self.arrived_members), len(self.members)))
+        return progress_bar.progress_bar(len(self.arrived_members), len(self.members))
 
 
     def reserve(self, arrival_datetime, event):
